@@ -101,9 +101,11 @@
     if (picCount>count-2) {
         for (int i = 0; i<picArr.count-(count-2); i++) {
             UIImageView *pic = [[UIImageView alloc]init];
-            pic.backgroundColor = [UIColor yellowColor];
+            pic.userInteractionEnabled = YES;
             [self.myPicViewArr addObject:pic];
             [self.pictureScrollView addSubview:pic];
+            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapPicAction:)];
+            [pic addGestureRecognizer:tap];
         }
     }
     for (int i =0; i<picArr.count+2; i++) {
@@ -111,10 +113,13 @@
         NSString *imageUrl;
         if (i==0) {
             imageUrl =  [picArr lastObject];
+            PicImage.tag = picArr.count-1;
         }else if (i==picArr.count+1){
             imageUrl = [picArr firstObject];
+            PicImage.tag = 0;
         }else{
             imageUrl = picArr[i-1];
+            PicImage.tag = i-1;
         }
         PicImage.frame = CGRectMake(i*PWidth, 0, PWidth,PHeight);
         [PicImage sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:placeholder];
@@ -191,5 +196,14 @@
     }
     [self.pictureScrollView setContentOffset:CGPointMake(self.bounds.size.width * index, 0) animated:YES];
 }
+
+
+- (void)tapPicAction:(UITapGestureRecognizer *)sender{
+    
+    if ([self.delegate respondsToSelector:@selector(tapPictureTag:)]) {
+        [self.delegate tapPictureTag:sender.view.tag];
+    }
+}
+
 
 @end

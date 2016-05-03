@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 #import "AutoLoopView.h"
-@interface ViewController ()
+@interface ViewController ()<AutoLoopDelegate>
 
 @property (nonatomic,strong) AutoLoopView *loop;
 
@@ -31,17 +31,22 @@
 -(void)turn{
     NSArray *picarray=@[@"http://e.hiphotos.baidu.com/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=0d6a0b519f22720e6fc3eaa81aa26123/574e9258d109b3de981f4a5bcbbf6c81800a4c64.jpg"];
     [self.loop setScrollerByPicArr:picarray];
-
+    
 }
 
 -(AutoLoopView *)loop{
     if (_loop==nil) {
         _loop = [[AutoLoopView alloc]initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 200)];
+        _loop.delegate = self;
         [self.view addSubview:_loop];
     }
     return _loop;
 }
 
+-(void)tapPictureTag:(NSInteger)tag{
+    NSLog(@"%d",tag);
+    
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
