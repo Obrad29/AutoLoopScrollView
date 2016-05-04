@@ -205,5 +205,12 @@
     }
 }
 
+-(void)dealloc{
+    [self.timer invalidate];
+}
+
+
+
+
 
 @end
